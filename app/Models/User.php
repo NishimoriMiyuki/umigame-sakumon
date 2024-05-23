@@ -49,4 +49,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Quiz::class);
     }
+    
+    // 更新日時順にクイズを取得するメソッド
+    public function getLatestQuizzes($perPage = 10)
+    {
+        return $this->quizzes()->latestUpdated()->paginate($perPage);
+    }
 }
