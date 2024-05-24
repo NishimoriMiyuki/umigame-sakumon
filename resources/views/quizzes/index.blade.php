@@ -10,20 +10,25 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                     <!-- ここにフィルター機能とか検索機能おきたい -->
-                    <ul>
-                        @foreach ($quizzes as $quiz)
-                            <x-card 
-                                title="{{ $quiz->title }}" 
-                                story="{{ $quiz->story }}" 
-                                questionsCount="{{ $quiz->questions->count() }}"
-                                createdAt="{{ $quiz->created_at->format('Y/m/d') }}"
-                                :labels="$quiz->labels"
-                            />
-                        @endforeach
-                    </ul>
-                    <div class="mt-4">
-                        {{ $quizzes->links() }}
-                    </div>
+                    @if($quizzes->isNotEmpty())
+                        <ul>
+                            @foreach ($quizzes as $quiz)
+                                <x-card 
+                                    title="{{ $quiz->title }}" 
+                                    story="{{ $quiz->story }}" 
+                                    questionsCount="{{ $quiz->questions->count() }}"
+                                    createdAt="{{ $quiz->created_at->format('Y/m/d') }}"
+                                    :labels="$quiz->labels"
+                                    :quiz="$quiz"
+                                />
+                            @endforeach
+                        </ul>
+                        <div class="mt-4">
+                            {{ $quizzes->links() }}
+                        </div>
+                    @else
+                        <p>{{ __('問題がありません') }}</p>
+                    @endif
                 </div>
             </div>
         </div>
