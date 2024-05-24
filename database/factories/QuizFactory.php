@@ -20,6 +20,7 @@ class QuizFactory extends Factory
             'title' => $this->faker->sentence,
             'story' => $this->faker->paragraph,
             'answer' => $this->faker->paragraph,
+            'user_id' => 1,
         ];
     }
 }

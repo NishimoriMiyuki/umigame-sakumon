@@ -13,6 +13,7 @@ class Quiz extends Model
     protected $fillable = [
         'title',
         'story',
+        'memo',
         'answer',
         'user_id',
     ];

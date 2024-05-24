@@ -21,17 +21,9 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         
-        // 名前が「みる」のユーザーを取得
-        $user = User::where('name', 'みる')->first();
-
-        // ユーザーが存在する場合のみクイズを作成
-        if ($user) {
-            Quiz::factory()->count(10)->create([
-                'user_id' => $user->id,
-            ]);
-        } else {
-            // ユーザーが存在しない場合の処理
-            $this->command->info('ユーザー「みる」が見つかりませんでした。');
-        }
+        $this->call([
+            LabelSeeder::class,
+            QuizSeeder::class,
+        ]);
     }
 }
