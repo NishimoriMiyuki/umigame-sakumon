@@ -52,4 +52,10 @@ class Label extends Model
     {
         return self::$colors[array_rand(self::$colors)];
     }
+    
+    public function colorToRgba($opacity = 0.2)
+    {
+        list($r, $g, $b) = sscanf($this->color, "#%02x%02x%02x");
+        return "rgba($r, $g, $b, $opacity)";
+    }
 }

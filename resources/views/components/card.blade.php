@@ -1,4 +1,4 @@
-@props(['title' => 'No Title', 'story' => 'No Story', 'questionsCount' => 0, 'createdAt' => 'Unknown', 'labels' => []])
+@props(['title' => 'No Title', 'story' => 'No Story', 'questionsCount' => 0, 'createdAt' => 'Unknown', 'labels' => [], 'quiz'])
 
 <!-- Card 1 Container -->
 <div class="relative">
@@ -12,7 +12,7 @@
         x-bind:aria-expanded="open"
         x-on:click="open = true"
         type="button"
-        class="flex h-6 w-6 items-center justify-center text-slate-400 hover:text-slate-600 active:text-slate-400"
+        class="flex h-6 w-6 items-center justify-center text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400 active:text-slate-400 dark:active:text-slate-600"
       >
         <svg
           class="hi-mini hi-ellipsis-vertical inline-block h-5 w-5"
@@ -43,12 +43,12 @@
         class="absolute end-0 z-10 mt-2 w-32 rounded-lg shadow-xl ltr:origin-top-right rtl:origin-top-left"
       >
         <div
-          class="divide-y divide-slate-100 rounded-lg bg-white ring-1 ring-black/5"
+          class="divide-y divide-slate-100 dark:divide-slate-700 rounded-lg bg-white dark:bg-gray-800 ring-1 ring-black/5 dark:ring-white/10"
         >
           <div class="flex flex-col gap-2 p-2">
-            <button
-              type="button"
-              class="group inline-flex items-center gap-1 rounded-lg bg-slate-50 px-2.5 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-600"
+            <a
+              href="{{ route('quizzes.edit', $quiz) }}"
+              class="group inline-flex items-center gap-1 rounded-lg bg-slate-50 dark:bg-slate-700 px-2.5 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-slate-600 dark:hover:text-slate-200"
             >
               <svg
                 class="hi-mini hi-pencil inline-block h-4 w-4 opacity-50 group-hover:opacity-100"
@@ -61,11 +61,14 @@
                   d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z"
                 />
               </svg>
-              <span>Edit</span>
-            </button>
+              <span>編集</span>
+            </a>
+            <form action="{{ route('quizzes.destroy', $quiz) }}" method="POST">
+              @csrf
+              @method('DELETE')
             <button
-              type="button"
-              class="group inline-flex items-center gap-1 rounded-lg bg-slate-50 px-2.5 py-1 text-sm font-medium text-slate-600 hover:bg-rose-50 hover:text-rose-600"
+              type="submit"
+              class="w-full group inline-flex items-center gap-1 rounded-lg bg-slate-50 dark:bg-slate-700 px-2.5 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-slate-600 dark:hover:text-slate-200"
             >
               <svg
                 class="hi-mini hi-trash inline-block h-4 w-4 opacity-50 group-hover:opacity-100"
@@ -80,8 +83,9 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span>Delete</span>
+              <span>削除</span>
             </button>
+            </form>
           </div>
         </div>
       </div>
@@ -93,28 +97,42 @@
 
   <!-- Card 1 -->
   <a
-    href="javascript:void(0)"
-    class="group flex flex-col gap-3 rounded-xl bg-white p-4 text-sm transition border"
+    href="{{ route('quizzes.edit', $quiz) }}"
+    :class="{ 'opacity-50': selectedQuizzes.length > 0,
+      'border border-gray-900 border-4': selectedQuizzes.includes({{ $quiz->id }}),
+      'border border-gray-300 dark:border-gray-300': !selectedQuizzes.includes({{ $quiz->id }}),
+    }"
+    @click.prevent="if (selectedQuizzes.length > 0) { 
+        if (selectedQuizzes.includes({{ $quiz->id }})) { 
+            selectedQuizzes = selectedQuizzes.filter(id => id !== {{ $quiz->id }}); 
+        } else { 
+            selectedQuizzes.push({{ $quiz->id }}); 
+        } 
+    } else { 
+        window.location.href = '{{ route('quizzes.edit', $quiz) }}'; 
+    }"
+    class="group flex flex-col gap-3 rounded-xl bg-white dark:bg-gray-800 p-4 text-sm transition border dark:border-gray-700"
   >
     <div class="-ms-1.5 flex grow flex-wrap gap-1 pe-6">
         @foreach ($labels as $label)
-            <span class="rounded-xl bg-rose-50 px-1.5 py-px font-medium" style="color: {{ $label->color }};">
+            <span class="rounded-xl px-1.5 py-px font-medium" 
+                  style="color: {{ $label->color }}; background-color: {{ $label->colorToRgba(0.2) }};">
                 #{{ $label->name }}
             </span>
         @endforeach
     </div>
-    <div class="break-all">
+    <div class="break-all text-slate-500 dark:text-slate-400">
       <h3 class="mb-1 font-bold">{{ $title }}</h3>
-      <p class="line-clamp-3 text-slate-500">
+      <p class="line-clamp-3">
         {{ $story }}
       </p>
     </div>
     <div class="flex items-center justify-between">
       <div
-        class="inline-flex items-center gap-1.5 text-slate-500"
+        class="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400"
       >
         <svg
-          class="hi-mini hi-calendar-days inline-block h-5 w-5 text-slate-300"
+          class="hi-mini hi-calendar-days inline-block h-5 w-5 text-slate-300 dark:text-slate-500"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -132,10 +150,10 @@
         <span>{{ $createdAt }}</span>
       </div>
       <div
-        class="inline-flex items-center gap-1.5 text-slate-500"
+        class="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400"
       >
         <svg 
-            class="hi-mini hi-clock inline-block h-5 w-5 text-slate-300" 
+            class="hi-mini hi-clock inline-block h-5 w-5 text-slate-300 dark:text-slate-500"
             xmlns="http://www.w3.org/2000/svg" 
             viewBox="0 0 20 20" 
             fill="currentColor" 

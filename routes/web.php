@@ -17,7 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    // クイズルート
+    // quizルート
+    Route::delete('/quizzes/destroy-selected', [QuizController::class, 'destroySelected'])->name('quizzes.destroy-selected');
     Route::resource('quizzes', QuizController::class);
 });
 

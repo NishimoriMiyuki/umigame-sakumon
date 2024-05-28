@@ -12,11 +12,11 @@ class LabelSeeder extends Seeder
     public function run()
     {
         $labels = [
-            ['name' => 'Science'],
-            ['name' => 'Math'],
-            ['name' => 'History'],
-            ['name' => 'Literature'],
-            ['name' => 'Art'],
+            ['name' => 'みる'],
+            ['name' => 'ここ'],
+            ['name' => 'らーめん'],
+            ['name' => '面白い'],
+            ['name' => '未出題'],
         ];
 
         $colors = [

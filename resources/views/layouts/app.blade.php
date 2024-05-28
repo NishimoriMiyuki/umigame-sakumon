@@ -68,5 +68,36 @@
                 {{ $slot }}
             </main>
         </div>
+        
+        @if(session('type'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let message;
+                    const type = '{{ session('type', 'default') }}';
+                    const description = '{{ session('description', '') }}';
+                    
+                    switch (type) 
+                    {
+                        case 'default':
+                            message = '通知';
+                            break;
+                        case 'success':
+                            message = '成功通知';
+                            break;
+                        case 'info':
+                            message = '情報通知';
+                            break;
+                        case 'warning':
+                            message = '警告通知';
+                            break;
+                        case 'danger':
+                            message = '危険通知';
+                            break;
+                    }
+                    
+                    toast(message, { type: type, description: description });
+                });
+            </script>
+        @endif
     </body>
 </html>
