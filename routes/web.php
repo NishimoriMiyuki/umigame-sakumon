@@ -19,6 +19,12 @@ Route::middleware('auth')->group(function () {
     
     // quizルート
     Route::delete('/quizzes/destroy-selected', [QuizController::class, 'destroySelected'])->name('quizzes.destroy-selected');
+    Route::delete('/quizzes/force-destroy-selected', [QuizController::class, 'forceDestroySelected'])->name('quizzes.force-destroy-selected');
+    Route::delete('/quizzes/all-force-destroy', [QuizController::class, 'AllForceDestroy'])->name('quizzes.all-force-destroy');
+    Route::delete('/quizzes/{id}/force-destroy', [QuizController::class, 'forceDestroy'])->name('quizzes.force-destroy');
+    Route::get('/quizzes/trashed', [QuizController::class, 'trashed'])->name('quizzes.trashed');
+    Route::post('/quizzes/{id}/restore', [QuizController::class, 'restore'])->name('quizzes.restore');
+    Route::post('/quizzes/restore-selected', [QuizController::class, 'restoreSelected'])->name('quizzes.restore-selected');
     Route::resource('quizzes', QuizController::class);
 });
 

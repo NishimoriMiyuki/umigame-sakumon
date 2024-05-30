@@ -1,4 +1,4 @@
-@props(['action', 'method' => 'POST', 'data' => null, 'buttonText' => '送信', 'answerOptions' => [], 'labels' => []])
+@props(['action' => '#', 'method' => 'POST', 'data' => null, 'buttonText' => '送信', 'answerOptions' => [], 'labels' => []])
 
 <form action="{{ $action }}" method="POST">
     @csrf
@@ -96,14 +96,14 @@
                 <p class="block font-medium text-sm text-gray-700 dark:text-gray-300">ラベル</p>
                 <div class="relative">
                     <x-text-input x-model="search" class="w-full pr-8" />
-                    <svg class="absolute right-2 top-1/2 transform -translate-y-1/2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <svg class="absolute right-2 top-1/2 transform -translate-y-1/2 h-5 w-5 text-indigo-400 dark:text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
                     </svg>
                 </div>
             </div>
             <div class="flex flex-col m-4 max-h-64 overflow-auto">
                 <template x-for="(userLabel, index) in userLabels" :key="index">
-                    <label :for="'userLabel-' + userLabel.id" x-show="userLabel.name.includes(search)" class="block font-medium text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 p-2">
+                    <label :for="'userLabel-' + userLabel.id" x-show="userLabel.name.includes(search)" class="block font-medium text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 p-2">
                         <input
                             type="checkbox"
                             name="labels[]"
@@ -159,7 +159,9 @@
         <x-input-error :messages="$errors->get('memo')" />
     </div>
     
-    <div class="flex items-center justify-end">
-        <x-primary-button>{{ $buttonText }}</x-primary-button>
-    </div>
+    @if($action !== '#')
+        <div class="flex items-center justify-end">
+            <x-primary-button>{{ $buttonText }}</x-primary-button>
+        </div>
+    @endif
 </form>

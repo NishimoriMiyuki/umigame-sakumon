@@ -60,4 +60,10 @@ class User extends Authenticatable
     {
         return $this->quizzes()->latestUpdated()->paginate($perPage);
     }
+    
+    // 削除日時順にクイズを取得するメソッド
+    public function getLatestDeletedQuizzes($perPage = 10)
+    {
+        return $this->quizzes()->latestDeleted()->paginate($perPage);
+    }
 }

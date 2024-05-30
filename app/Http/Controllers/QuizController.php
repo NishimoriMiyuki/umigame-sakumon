@@ -20,6 +20,12 @@ class QuizController extends Controller
         $quizzes = auth()->user()->getLatestQuizzes(10);
         return view('quizzes.index', compact('quizzes'));
     }
+    
+    public function trashed()
+    {
+        $quizzes = auth()->user()->getLatestDeletedQuizzes(10);
+        return view('quizzes.trashed', compact('quizzes'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -103,7 +109,16 @@ class QuizController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $quiz = auth()->user()->quizzes()->where('id', $id)->onlyTrashed()->first();
+        
+        if ($response = $this->authorize('view', $quiz))
+        {
+            return $response;
+        }
+        
+        $labels = auth()->user()->labels;
+        $answerOptions = Question::getAnswerOptions();
+        return view('quizzes.show', compact('quiz', 'labels', 'answerOptions'));
     }
 
     /**
@@ -235,6 +250,107 @@ class QuizController extends Controller
         return redirect()->route('quizzes.index')
             ->with('type', 'success')
             ->with('description', "{$count}個削除されました");
+    }
+    
+    public function forceDestroy($id)
+    {
+        $quiz = auth()->user()->quizzes()->where('id', $id)->onlyTrashed()->first();
+        
+        if ($response = $this->authorize('forceDelete', $quiz))
+        {
+            return $response;
+        }
+        
+        $quiz->forceDelete();
+        
+        return redirect()->route('quizzes.trashed')
+            ->with('type', 'success')
+            ->with('description', "完全に削除されました");
+    }
+    
+    public function forceDestroySelected(Request $request)
+    {
+        $ids = $request->input('ids', '[]');
+        $ids = json_decode($ids, true);
+        
+        $quizzes = auth()->user()->quizzes()->onlyTrashed()->whereIn('id', $ids)->get();
+        
+        $count = 0;
+        
+        foreach ($quizzes as $quiz) 
+        {
+            if ($response = $this->authorize('forceDelete', $quiz))
+            {
+                return $response;
+            }
+            
+            $quiz->forceDelete();
+            $count++;
+        }
+        
+        return redirect()->route('quizzes.trashed')
+            ->with('type', 'success')
+            ->with('description', "{$count}個完全に削除されました");
+    }
+    
+    public function AllForceDestroy()
+    {
+        $quizzes = auth()->user()->quizzes()->onlyTrashed()->get();
+        
+        foreach ($quizzes as $quiz) 
+        {
+            if ($response = $this->authorize('forceDelete', $quiz))
+            {
+                return $response;
+            }
+            
+            $quiz->forceDelete();
+        }
+        
+        return redirect()->route('quizzes.trashed')
+            ->with('type', 'success')
+            ->with('description', "完全に削除されました");
+    }
+    
+    public function restore($id)
+    {
+        $quiz = auth()->user()->quizzes()->where('id', $id)->onlyTrashed()->first();
+        
+        if ($response = $this->authorize('restore', $quiz))
+        {
+            return $response;
+        }
+        
+        $quiz->restore();
+        
+        return redirect()->route('quizzes.trashed')
+            ->with('type', 'success')
+            ->with('description', "復元されました");
+    }
+    
+    public function restoreSelected(Request $request)
+    {
+        $ids = $request->input('ids', '[]');
+        $ids = json_decode($ids, true);
+        
+        $quizzes = auth()->user()->quizzes()->onlyTrashed()->whereIn('id', $ids)->get();
+        
+        $count = 0;
+        
+        foreach ($quizzes as $quiz) 
+        {
+            if ($response = $this->authorize('restore', $quiz))
+            {
+                return $response;
+            }
+            
+            $quiz->restore();
+            $count++;
+        }
+        
+        return redirect()->route('quizzes.trashed')
+            ->with('type', 'success')
+            ->with('description', "{$count}個復元されました");
     }
 
     // 更新権限を確認

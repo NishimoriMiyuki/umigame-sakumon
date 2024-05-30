@@ -38,4 +38,10 @@ class Quiz extends Model
     {
         return $query->orderBy('updated_at', 'desc');
     }
+    
+    // 削除日時順にクイズを取得するスコープ
+    public function scopeLatestDeleted($query)
+    {
+        return $query->onlyTrashed()->orderBy('deleted_at', 'desc');
+    }
 }

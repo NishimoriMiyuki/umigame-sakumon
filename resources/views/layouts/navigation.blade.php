@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('quizzes.create')" :active="request()->routeIs('quizzes.create')">
                         {{ __('問題作成') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('quizzes.trashed')" :active="request()->routeIs('quizzes.trashed')">
+                        {{ __('ゴミ箱') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -81,6 +84,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('quizzes.create')" :active="request()->routeIs('quizzes.create')">
                 {{ __('問題作成') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('quizzes.trashed')" :active="request()->routeIs('quizzes.trashed')">
+                {{ __('ゴミ箱') }}
             </x-responsive-nav-link>
         </div>
 
