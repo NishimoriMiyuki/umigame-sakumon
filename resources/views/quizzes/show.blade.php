@@ -28,6 +28,11 @@
                             <x-danger-button>完全に削除</x-danger-button>
                         </form>
                     </div>
+                    
+                    <div class="text-slate-300 dark:text-slate-500 text-sm space-x-4">    
+                        <span>作成日:{{ $quiz->created_at->format('Y/m/d') }}</span>
+                        <span>編集日:{{ $quiz->updated_at->format('Y/m/d') }}</span>
+                    </div>
                 
                 </div>
             </div>
