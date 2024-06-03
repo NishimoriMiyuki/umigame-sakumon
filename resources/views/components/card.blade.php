@@ -5,7 +5,17 @@
   <!-- Action -->
   <div class="absolute end-4 top-4">
     <!-- Dropdown Container -->
-    <div x-data="{ open: false }" class="relative">
+    <div 
+      x-data="{ 
+        open: false, 
+        copyClipboard(text)
+        {
+          navigator.clipboard.writeText(text)
+            .then(() => { toast('コピーしました', { type: 'success', position: 'bottom-center' }); } )
+            .catch(err => { toast('コピーに失敗しました', { type: 'warning', position: 'bottom-center' }); });
+        } 
+      }" 
+      class="relative">
       <button
         id="card-dropdown-1"
         aria-haspopup="true"
@@ -65,6 +75,40 @@
                   </svg>
                   <span>編集</span>
                 </a>
+                <button 
+                  type="button"
+                  @click="copyClipboard('{{ $quiz->question_format }}')"
+                  class="w-full group inline-flex items-center gap-1 rounded-lg bg-slate-50 dark:bg-slate-700 px-2.5 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-slate-600 dark:hover:text-slate-200">
+                  <div class="h-4 w-4 flex items-center justify-center">
+                    <svg 
+                      class="hi-mini hi-trash inline-block h-4 w-4 opacity-50 group-hover:opacity-100" 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      height="16px" 
+                      viewBox="0 -960 960 960"
+                      width="16px" 
+                      fill="currentColor">
+                      <path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/>
+                    </svg>
+                  </div>
+                  <span>出題形式でコピー</span>
+                  </button>
+                <button 
+                  type="button" 
+                  @click="copyClipboard('{{ $quiz->answer_format }}')"
+                  class="w-full group inline-flex items-center gap-1 rounded-lg bg-slate-50 dark:bg-slate-700 px-2.5 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-slate-600 dark:hover:text-slate-200">
+                  <div class="h-4 w-4 flex items-center justify-center">
+                    <svg 
+                      class="hi-mini hi-trash inline-block h-4 w-4 opacity-50 group-hover:opacity-100" 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      height="16px" 
+                      viewBox="0 -960 960 960" 
+                      width="16px" 
+                      fill="currentColor">
+                      <path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/>
+                    </svg>
+                  </div>
+                  <span>真相形式でコピー</span>
+                </button>
                 <form action="{{ route('quizzes.destroy', $quiz) }}" method="POST">
                   @csrf
                   @method('DELETE')
@@ -174,14 +218,11 @@
                 {{ $label->name }}
             </span>
         @endforeach
-        <!-- スペース開けるためだけに -->
-        @if($quiz->labels->isEmpty())
-          <div class="h-5"></div>
-        @endif
     </div>
     <div class="break-all text-slate-500 dark:text-slate-400">
       <h3 class="mb-1 font-bold">{{ $quiz->title ?? '未入力' }}</h3>
-      <p class="line-clamp-3">{{ $quiz->story ?? '未入力' }}</p>
+      <p class="mb-1 line-clamp-3"><span class="font-bold text-lg text-blue-600 dark:text-blue-300">Q.</span> {{ $quiz->story ?? '未入力' }}</p>
+      <p class="line-clamp-3"><span class="font-bold text-lg text-red-600 dark:text-red-300">A.</span> {{ $quiz->answer ?? '未入力' }}</p>
     </div>
     <div class="flex items-center justify-between">
       <div
@@ -189,21 +230,25 @@
       >
         <svg
           class="hi-mini hi-calendar-days inline-block h-5 w-5 text-slate-300 dark:text-slate-500"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            d="M5.25 12a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H6a.75.75 0 01-.75-.75V12zM6 13.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V14a.75.75 0 00-.75-.75H6zM7.25 12a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H8a.75.75 0 01-.75-.75V12zM8 13.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V14a.75.75 0 00-.75-.75H8zM9.25 10a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H10a.75.75 0 01-.75-.75V10zM10 11.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V12a.75.75 0 00-.75-.75H10zM9.25 14a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H10a.75.75 0 01-.75-.75V14zM12 9.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V10a.75.75 0 00-.75-.75H12zM11.25 12a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H12a.75.75 0 01-.75-.75V12zM12 13.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V14a.75.75 0 00-.75-.75H12zM13.25 10a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H14a.75.75 0 01-.75-.75V10zM14 11.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V12a.75.75 0 00-.75-.75H14z"
-          />
-          <path
-            fill-rule="evenodd"
-            d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z"
-            clip-rule="evenodd"
-          />
+          xmlns="http://www.w3.org/2000/svg" 
+          height="20px" 
+          viewBox="0 -960 960 960" 
+          width="20px" 
+          fill="currentColor">
+          <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v200h-80v-40H200v400h280v80H200Zm0-560h560v-80H200v80Zm0 0v-80 80ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/>
         </svg>
         <span>{{ $quiz->created_at->format('Y/m/d') }}</span>
+
+        <svg
+          class="hi-mini hi-calendar-days inline-block h-5 w-5 text-slate-300 dark:text-slate-500"
+          xmlns="http://www.w3.org/2000/svg" 
+          height="20px" 
+          viewBox="0 -960 960 960" 
+          width="20px" 
+          fill="currentColor">
+          <path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+        </svg>
+        <span>{{ $quiz->updated_at->format('Y/m/d') }}</span>
       </div>
       <div
         class="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400"

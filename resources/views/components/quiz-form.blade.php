@@ -1,13 +1,22 @@
 @props(['action' => '#', 'method' => 'POST', 'data' => null, 'buttonText' => '送信', 'answerOptions' => [], 'labels' => []])
 
-<form action="{{ $action }}" method="POST">
+<form 
+    action="{{ $action }}" 
+    method="POST">
     @csrf
     @if($method !== 'POST')
         @method($method)
     @endif
     
     <div class="mb-4">
-        <x-input-label for="title" :value="__('タイトル')" />
+        <div class="flex justify-between">
+            <div>
+                <x-input-label for="title" :value="__('タイトル')" />
+            </div>
+            <div>
+                <x-copy-to-clipboard selector="#title" />
+            </div>
+        </div>
         <x-text-input
             name="title" 
             id="title" 
@@ -20,7 +29,14 @@
     </div>
 
     <div class="mb-4">
-        <x-input-label for="story" :value="__('問題')" />
+        <div class="flex justify-between">
+            <div>
+                <x-input-label for="story" :value="__('問題')" />
+            </div>
+            <div>
+                <x-copy-to-clipboard selector="#story" />
+            </div>
+        </div>
         <x-textarea 
             name="story" 
             id="story" 
@@ -32,7 +48,14 @@
     </div>
     
     <div class="mb-4">
-        <x-input-label for="answer" :value="__('真相')" />
+        <div class="flex justify-between">
+            <div>
+                <x-input-label for="answer" :value="__('真相')" />
+            </div>
+            <div>
+                <x-copy-to-clipboard selector="#answer" />
+            </div>
+        </div>
         <x-textarea 
             name="answer" 
             id="answer" 
@@ -124,7 +147,7 @@
         </x-modal>
     </div>
     
-    <div class="mb-4" x-data="{ questions: {{ json_encode(old('questions', $data->questions ?? [])) }} }">
+    <div class="mb-4" x-data="{ questions: {{ json_encode(old('questions', $data->questions ?? [])) }}, maxQuestions: 20}">
         <x-input-label for="questions" :value="__('質問例')" />
         <template x-for="(question, index) in questions" :key="index">
             <div class="mb-2 flex items-center">
@@ -143,11 +166,18 @@
                 <x-secondary-button @click="questions.splice(index, 1)" class="flex-shrink-0">削除</x-secondary-button>
             </div>
         </template>
-        <x-secondary-button @click="questions.push({ content: '', answer: '' });">質問例を追加</x-secondary-button>
+        <x-secondary-button @click="questions.length < maxQuestions ? questions.push({ content: '', answer: '' }) : null" x-bind:disabled="questions.length >= maxQuestions">質問例を追加(最大20)</x-secondary-button>
     </div>
     
     <div class="mb-4">
-        <x-input-label for="memo" :value="__('メモ')" />
+        <div class="flex justify-between">
+            <div>
+                <x-input-label for="memo" :value="__('メモ')" />
+            </div>
+            <div>
+                <x-copy-to-clipboard selector="#memo" />
+            </div>
+        </div>
         <x-textarea 
             id="memo" 
             name="memo" 

@@ -50,7 +50,7 @@ class QuizController extends Controller
             'answer' => 'nullable|string|max:2000',
             'labels' => 'array',
             'labels.*' => 'exists:labels,id',
-            'questions' => 'array',
+            'questions' => 'array|max:20',
             'questions.*.content' => 'nullable|string|max:255',
             'questions.*.answer' => 'nullable|string',
         ]);

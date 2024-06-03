@@ -44,4 +44,17 @@ class Quiz extends Model
     {
         return $query->onlyTrashed()->orderBy('deleted_at', 'desc');
     }
+    
+    public function getQuestionFormatAttribute()
+    {
+        $format = "【{$this->title}】作問:{$this->user->name}\n{$this->story}";
+        // javascriptで使える文字列に変換して返す
+        return str_replace(["\r", "\n"], ['\\r', '\\n'], $format);
+    }
+    
+    public function getAnswerFormatAttribute()
+    {
+        $format = "【真相】\n{$this->answer}";
+        return str_replace(["\r", "\n"], ['\\r', '\\n'], $format);
+    }
 }
