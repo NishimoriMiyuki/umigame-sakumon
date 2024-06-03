@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-gray-100 dark:bg-gray-900 overflow-hidden sm:rounded-lg">
+            <div class="bg-gray-100 dark:bg-gray-900 sm:rounded-lg">
                 <div class="p-6 bg-gray-100 dark:bg-gray-900">
                     <x-quiz-list 
                         :quizzes="$quizzes"
