@@ -15,7 +15,7 @@
             value="{{ old('title', $data->title ?? '') }}" 
             placeholder="(最大255文字)" 
             maxlength="255"
-            x-on:input="if (event.target.value.length >= 255) { toast('残り0文字です', { type: 'warning' }); }" />
+            x-on:input="if (event.target.value.length >= 255) { toast('残り0文字です', { type: 'warning', position: 'bottom-center' }); }" />
         <x-input-error :messages="$errors->get('title')" />
     </div>
 
@@ -27,7 +27,7 @@
             class="w-full" 
             placeholder="(最大2000文字)" 
             maxlength="2000"
-            x-on:input="if (event.target.value.length >= 2000) { toast('残り0文字です', { type: 'warning' }); }">{{ old('story', $data->story ?? '') }}</x-textarea>
+            x-on:input="if (event.target.value.length >= 2000) { toast('残り0文字です', { type: 'warning', position: 'bottom-center' }); }">{{ old('story', $data->story ?? '') }}</x-textarea>
         <x-input-error :messages="$errors->get('story')" />
     </div>
     
@@ -39,7 +39,7 @@
             class="w-full" 
             placeholder="(最大2000文字)" 
             maxlength="2000"
-            x-on:input="if (event.target.value.length >= 2000) { toast('残り0文字です', { type: 'warning' }); }"
+            x-on:input="if (event.target.value.length >= 2000) { toast('残り0文字です', { type: 'warning', position: 'bottom-center' }); }"
         >{{ old('answer', $data->answer ?? '') }}</x-textarea>
         <x-input-error :messages="$errors->get('answer')" />
     </div>
@@ -81,7 +81,7 @@
             <template x-for="(label, index) in labels" :key="index">
                 <span class="rounded-xl px-1.5 py-px font-medium" 
                       x-bind:style="'color: ' + label.color + '; background-color: ' + colorToRgba(label.color, 0.2)"
-                      x-text="'#' + label.name">
+                      x-text="label.name">
                 </span>
             </template>
         </div>
@@ -134,7 +134,7 @@
                     class="w-full mr-2" 
                     placeholder="(最大255文字)" 
                     maxlength="255"
-                    x-on:input="if (question.content.length >= 255) { toast('残り0文字です', { type: 'warning' }); }"/>
+                    x-on:input="if (question.content.length >= 255) { toast('残り0文字です', { type: 'warning', position: 'bottom-center' }); }"/>
                 <x-select
                     x-bind:name="'questions[' + index + '][answer]'" 
                     x-model="question.answer"
@@ -154,7 +154,7 @@
             class="w-full" 
             placeholder="(最大500文字)"
             maxlength="500"
-            x-on:input="if (event.target.value.length >= 500) { toast('残り0文字です', { type: 'warning' }); }"
+            x-on:input="if (event.target.value.length >= 500) { toast('残り0文字です', { type: 'warning', position: 'bottom-center' }); }"
         >{{ old('memo', $data->memo ?? '') }}</x-textarea>
         <x-input-error :messages="$errors->get('memo')" />
     </div>

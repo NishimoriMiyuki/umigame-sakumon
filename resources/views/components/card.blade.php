@@ -139,6 +139,7 @@
     href="#"
     :class="{
       'border border-indigo-400 dark:border-indigo-600 border-4': selectedQuizzes.includes({{ $quiz->id }}),
+      'border dark:border-gray-700': !selectedQuizzes.includes({{ $quiz->id }})
     }"
     x-cloak
     @click.prevent="
@@ -170,7 +171,7 @@
         @foreach ($quiz->labels as $label)
             <span class="rounded-xl px-1.5 py-px font-medium" 
                   style="color: {{ $label->color }}; background-color: {{ $label->colorToRgba(0.2) }};">
-                #{{ $label->name }}
+                {{ $label->name }}
             </span>
         @endforeach
         <!-- スペース開けるためだけに -->

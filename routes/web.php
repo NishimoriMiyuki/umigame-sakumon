@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\LabelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/quizzes/{id}/restore', [QuizController::class, 'restore'])->name('quizzes.restore');
     Route::post('/quizzes/restore-selected', [QuizController::class, 'restoreSelected'])->name('quizzes.restore-selected');
     Route::resource('quizzes', QuizController::class);
+    
+    // labelルート
+    Route::resource('labels', LabelController::class)->only([
+        'index', 'store', 'update', 'destroy'
+    ]);
 });
 
 require __DIR__.'/auth.php';

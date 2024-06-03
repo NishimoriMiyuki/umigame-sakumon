@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 
 class QuizController extends Controller
 {
@@ -42,7 +43,36 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $this->validateQuiz($request);
+        $validator = Validator::make($request->all(), [
+            'title' => 'nullable|string|max:255',
+            'story' => 'nullable|string|max:2000',
+            'memo' => 'nullable|string|max:500',
+            'answer' => 'nullable|string|max:2000',
+            'labels' => 'array',
+            'labels.*' => 'exists:labels,id',
+            'questions' => 'array',
+            'questions.*.content' => 'nullable|string|max:255',
+            'questions.*.answer' => 'nullable|string',
+        ]);
+    
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+        
+            // エラーメッセージを取得
+            $errorMessages = '';
+            foreach ($errors->getMessages() as $field => $messages) {
+                foreach ($messages as $message) {
+                    $errorMessages .= "$message";
+                }
+            }
+        
+            return redirect()->back()
+                ->withInput()
+                ->with('type', 'warning')
+                ->with('description', $errorMessages);
+        }
+        
+        $validated = $validator->validated();
         
         // 配列の要素にコールバック登録して新しい配列を作る
         $nonEmptyValidated = array_filter($validated, function($value) {
@@ -147,8 +177,37 @@ class QuizController extends Controller
         {
             return $response;
         }
+        
+        $validator = Validator::make($request->all(), [
+            'title' => 'nullable|string|max:255',
+            'story' => 'nullable|string|max:2000',
+            'memo' => 'nullable|string|max:500',
+            'answer' => 'nullable|string|max:2000',
+            'labels' => 'array',
+            'labels.*' => 'exists:labels,id',
+            'questions' => 'array',
+            'questions.*.content' => 'nullable|string|max:255',
+            'questions.*.answer' => 'nullable|string',
+        ]);
     
-        $validated = $this->validateQuiz($request);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+        
+            // エラーメッセージを取得
+            $errorMessages = '';
+            foreach ($errors->getMessages() as $field => $messages) {
+                foreach ($messages as $message) {
+                    $errorMessages .= "$message";
+                }
+            }
+        
+            return redirect()->back()
+                ->withInput()
+                ->with('type', 'warning')
+                ->with('description', $errorMessages);
+        }
+        
+        $validated = $validator->validated();
     
         try 
         {
@@ -375,21 +434,5 @@ class QuizController extends Controller
                 ->with('type', 'warning')
                 ->with('description', $status);
         }
-    }
-    
-    // バリデート
-    private function validateQuiz(Request $request)
-    {
-        return $request->validate([
-            'title' => 'nullable|string|max:255',
-            'story' => 'nullable|string|max:2000',
-            'memo' => 'nullable|string|max:500',
-            'answer' => 'nullable|string|max:2000',
-            'labels' => 'array',
-            'labels.*' => 'exists:labels,id',
-            'questions' => 'array',
-            'questions.*.content' => 'nullable|string|max:255',
-            'questions.*.answer' => 'nullable|string',
-        ]);
     }
 }

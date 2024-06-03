@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('quizzes.trashed')" :active="request()->routeIs('quizzes.trashed')">
                         {{ __('ゴミ箱') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('labels.index')" :active="request()->routeIs('labels.index')">
+                        {{ __('ラベルの編集') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -87,6 +90,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('quizzes.trashed')" :active="request()->routeIs('quizzes.trashed')">
                 {{ __('ゴミ箱') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('labels.index')" :active="request()->routeIs('labels.index')">
+                {{ __('ラベルの編集') }}
             </x-responsive-nav-link>
         </div>
 

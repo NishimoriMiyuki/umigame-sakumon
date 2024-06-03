@@ -95,7 +95,7 @@
                             break;
                     }
                     
-                    toast(message, { type: type, description: description });
+                    toast(message, { type: type, description: description, position: 'bottom-center' });
                 });
             </script>
         @endif

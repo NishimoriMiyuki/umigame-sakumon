@@ -20,8 +20,8 @@
                 @endif
             </div>
             
-            <div class="bg-gray-100 dark:bg-gray-800 overflow-hidden sm:rounded-lg">
-                <div class="p-6 bg-gray-100 dark:bg-gray-800 dark:border-gray-700">
+            <div class="bg-gray-100 dark:bg-gray-900 overflow-hidden sm:rounded-lg">
+                <div class="p-6 bg-gray-100 dark:bg-gray-900">
                     <x-quiz-list 
                         :quizzes="$quizzes"
                         massage="ゴミ箱は空です"
