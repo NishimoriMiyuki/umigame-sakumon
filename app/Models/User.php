@@ -55,10 +55,14 @@ class User extends Authenticatable
         return $this->hasMany(Label::class);
     }
     
-    // 更新日時順にクイズを取得するメソッド
+    public function getLatestQuizzesQuery()
+    {
+        return $this->quizzes()->latestUpdated();
+    }
+    
     public function getLatestQuizzes($perPage = 10)
     {
-        return $this->quizzes()->latestUpdated()->paginate($perPage);
+        return $this->getLatestQuizzesQuery()->paginate($perPage);
     }
     
     // 削除日時順にクイズを取得するメソッド

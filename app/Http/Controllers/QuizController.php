@@ -38,6 +38,7 @@ class QuizController extends Controller
     
         $quizzes = collect();
         $labels = auth()->user()->labels;
+        $search = $request->search;
     
         if ($labelId)
         {
@@ -47,13 +48,20 @@ class QuizController extends Controller
             if ($label) 
             {
                 // あったらラベルと紐付いてるquizを取ってくる
-                $quizzes = $label->quizzes()->paginate(10);
+                $quizzes = $label->getLatestQuizzesQuery();
             }
         }
         else 
         {
-            $quizzes = auth()->user()->getLatestQuizzes(10);
+            $quizzes = auth()->user()->getLatestQuizzesQuery();
         }
+        
+        if($search)
+        {
+            $quizzes = $quizzes->search($search);
+        }
+        
+        $quizzes = $quizzes->paginate(10);
     
         return view('quizzes.index', compact('quizzes', 'labels', 'labelId'));
     }

@@ -57,4 +57,11 @@ class Quiz extends Model
         $format = "【真相】\n{$this->answer}";
         return str_replace(["\r", "\n"], ['\\r', '\\n'], $format);
     }
+    
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('title', 'like', '%' . $search . '%')
+            ->orWhere('story', 'like', '%' . $search . '%')
+            ->orWhere('answer', 'like', '%' . $search . '%');
+    }
 }

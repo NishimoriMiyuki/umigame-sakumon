@@ -59,8 +59,13 @@ class Label extends Model
         return "rgba($r, $g, $b, $opacity)";
     }
     
+    public function getLatestQuizzesQuery()
+    {
+        return $this->quizzes()->latestUpdated();
+    }
+    
     public function getLatestQuizzes($perPage = 10)
     {
-        return $this->quizzes()->latestUpdated()->paginate($perPage);
+        return $this->getLatestQuizzesQuery()->paginate($perPage);
     }
 }

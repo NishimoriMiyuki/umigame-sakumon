@@ -9,7 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-gray-100 dark:bg-gray-900 sm:rounded-lg">
                 
-                <div class="pl-6 pr-6 flex justify-end">
+                <div class="pl-6 pr-6 sm:flex sm:justify-between items-center">
+                    <div class="sm:mr-24 flex-grow">
+                        <form action="{{ route('quizzes.index') }}" method="GET" class="flex items-center">
+                            <x-text-input name="search" class="w-full flex-grow" placeholder="検索..." value="{{ request('search') }}" />
+                            <x-primary-button class="flex-shrink-0 ml-1">検索</x-primary-button>
+                        </form>
+                    </div>
                     <x-slide-over
                         :labels="$labels"
                         :labelId="$labelId" />
