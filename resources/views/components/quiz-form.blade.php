@@ -9,7 +9,7 @@
     @endif
     
     <div class="mb-4">
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center mb-1">
             <div>
                 <x-input-label for="title" :value="__('タイトル')" />
             </div>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="mb-4">
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center mb-1">
             <div>
                 <x-input-label for="story" :value="__('問題')" />
             </div>
@@ -48,7 +48,7 @@
     </div>
     
     <div class="mb-4">
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center mb-1">
             <div>
                 <x-input-label for="answer" :value="__('真相')" />
             </div>
@@ -109,7 +109,7 @@
             </template>
         </div>
         
-        <x-secondary-button class="mt-2" x-on:click="$dispatch('open-modal', 'label-modal');">
+        <x-secondary-button class="mt-1" x-on:click="$dispatch('open-modal', 'label-modal');">
             ラベルを追加
         </x-secondary-button>
         
@@ -166,11 +166,11 @@
                 <x-secondary-button @click="questions.splice(index, 1)" class="flex-shrink-0">削除</x-secondary-button>
             </div>
         </template>
-        <x-secondary-button @click="questions.length < maxQuestions ? questions.push({ content: '', answer: '' }) : null" x-bind:disabled="questions.length >= maxQuestions">質問例を追加(最大20)</x-secondary-button>
+        <x-secondary-button @click="questions.length < maxQuestions ? questions.push({ content: '', answer: '' }) : null" x-bind:disabled="questions.length >= maxQuestions" class="mt-1">質問例を追加(最大20)</x-secondary-button>
     </div>
     
     <div class="mb-4">
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center mb-1">
             <div>
                 <x-input-label for="memo" :value="__('メモ')" />
             </div>
