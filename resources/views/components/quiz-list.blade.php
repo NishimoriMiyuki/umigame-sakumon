@@ -91,7 +91,7 @@
         </div>
     </div>
     <div class="mt-4">
-        {{ $quizzes->links() }}
+        {{ $quizzes->appends(['id' => request()->id])->links() }}
     </div>
 @else
     <div class="flex items-center justify-center" style="min-height: 50vh;">

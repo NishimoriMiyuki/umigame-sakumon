@@ -16,10 +16,46 @@ class QuizController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $quizzes = auth()->user()->getLatestQuizzes(10);
-        return view('quizzes.index', compact('quizzes'));
+        if ($request->has('clear_filter')) {
+            // clear_filterパラメータが存在する場合、セッションからラベルIDを削除
+            $request->session()->forget('labelId');
+        }
+    
+        $labelId = $request->id;
+        
+        if ($labelId) 
+        {
+            // ラベルIDが指定されている場合、それをセッションに保存
+            $request->session()->put('labelId', $labelId);
+        }
+        else
+        {
+            // ラベルIDが指定されていない場合、セッションから取得
+            $labelId = $request->session()->get('labelId');
+        }
+    
+        $quizzes = collect();
+        $labels = auth()->user()->labels;
+    
+        if ($labelId)
+        {
+            // ユーザーが所持してるラベルに同じidのラベルがあるか
+            $label = $labels->firstWhere('id', $labelId);
+    
+            if ($label) 
+            {
+                // あったらラベルと紐付いてるquizを取ってくる
+                $quizzes = $label->quizzes()->paginate(10);
+            }
+        }
+        else 
+        {
+            $quizzes = auth()->user()->getLatestQuizzes(10);
+        }
+    
+        return view('quizzes.index', compact('quizzes', 'labels', 'labelId'));
     }
     
     public function trashed()

@@ -8,6 +8,13 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-gray-100 dark:bg-gray-900 sm:rounded-lg">
+                
+                <div class="pl-6 pr-6 flex justify-end">
+                    <x-slide-over
+                        :labels="$labels"
+                        :labelId="$labelId" />
+                </div>
+                
                 <div class="p-6 bg-gray-100 dark:bg-gray-900">
                     <x-quiz-list 
                         :quizzes="$quizzes"

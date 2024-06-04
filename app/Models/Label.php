@@ -58,4 +58,9 @@ class Label extends Model
         list($r, $g, $b) = sscanf($this->color, "#%02x%02x%02x");
         return "rgba($r, $g, $b, $opacity)";
     }
+    
+    public function getLatestQuizzes($perPage = 10)
+    {
+        return $this->quizzes()->latestUpdated()->paginate($perPage);
+    }
 }
