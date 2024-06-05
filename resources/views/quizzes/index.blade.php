@@ -16,9 +16,58 @@
                             <x-primary-button class="flex-shrink-0 ml-1">検索</x-primary-button>
                         </form>
                     </div>
-                    <x-slide-over
-                        :labels="$labels"
-                        :labelId="$labelId" />
+                    
+                    <div class="flex">
+                        <x-slide-over
+                            :labels="$labels"
+                            :labelId="$labelId" />
+                            
+                        <div class="ml-1">
+                            <x-dropdown align="right" width="48">
+                                <x-slot name="trigger">
+                                    <x-secondary-button>
+                                        <svg 
+                                            xmlns="http://www.w3.org/2000/svg" 
+                                            height="18px" 
+                                            viewBox="0 -960 960 960"
+                                            width="18px" 
+                                            fill="currentColor"><path d="M144-264v-72h240v72H144Zm0-180v-72h432v72H144Zm0-180v-72h672v72H144Z"/></svg>
+                                        <span class="font-medium">
+                                            @php
+                                                $sortOrderMap = [
+                                                    'created_atasc' => '作成日 昇順',
+                                                    'created_atdesc' => '作成日 降順',
+                                                    'updated_atasc' => '更新日 昇順',
+                                                    'updated_atdesc' => '更新日 降順',
+                                                ];
+                                                $sortOrderKey = session('sort') . session('order');
+                                            @endphp
+                                            {{ $sortOrderMap[$sortOrderKey] ?? '並び替え' }}
+                                        </span>
+                                    </x-secondary-button>
+                                </x-slot>
+            
+                                <x-slot name="content">
+                                    <x-dropdown-link href="/quizzes?clear_sort=1" class="text-red-500">
+                                        並び替え解除
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('quizzes.index', ['sort' => 'created_at', 'order' => 'asc'])">
+                                        作成日 昇順
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('quizzes.index', ['sort' => 'created_at', 'order' => 'desc'])">
+                                        作成日 降順
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('quizzes.index', ['sort' => 'updated_at', 'order' => 'asc'])">
+                                        更新日 昇順
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('quizzes.index', ['sort' => 'updated_at', 'order' => 'desc'])">
+                                        更新日 降順
+                                    </x-dropdown-link>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                        
+                    </div>
                 </div>
                 
                 <div class="p-6 bg-gray-100 dark:bg-gray-900">

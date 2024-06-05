@@ -18,9 +18,15 @@ class QuizController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('clear_filter')) {
+        if ($request->has('clear_filter')) 
+        {
             // clear_filterパラメータが存在する場合、セッションからラベルIDを削除
             $request->session()->forget('labelId');
+        }
+        
+        if ($request->has('clear_sort')) 
+        {
+            $request->session()->forget(['sort', 'order']);
         }
     
         $labelId = $request->id;
@@ -39,6 +45,8 @@ class QuizController extends Controller
         $quizzes = collect();
         $labels = auth()->user()->labels;
         $search = $request->search;
+        $sort = $request->sort;
+        $order = $request->order;
     
         if ($labelId)
         {
@@ -48,12 +56,37 @@ class QuizController extends Controller
             if ($label) 
             {
                 // あったらラベルと紐付いてるquizを取ってくる
-                $quizzes = $label->getLatestQuizzesQuery();
+                $quizzes = $label->quizzes();
             }
         }
         else 
         {
-            $quizzes = auth()->user()->getLatestQuizzesQuery();
+            $quizzes = auth()->user()->quizzes();
+        }
+        
+        if ($sort && $order) 
+        {
+            // セッションにsortとorderを保存
+            $request->session()->put('sort', $sort);
+            $request->session()->put('order', $order);
+        }
+        else
+        {
+            // セッションからsortとorderを取得
+            $sort = $request->session()->get('sort');
+            $order = $request->session()->get('order');
+        }
+        
+        if ($sort && $order) 
+        {
+            if ($order === 'asc') 
+            {
+                $quizzes = $quizzes->orderBy($sort);
+            }
+            elseif ($order === 'desc') 
+            {
+                $quizzes = $quizzes->orderByDesc($sort);
+            }
         }
         
         if($search)

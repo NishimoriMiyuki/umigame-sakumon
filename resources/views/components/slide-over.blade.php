@@ -64,7 +64,7 @@
                                 </div>
                             <div class="relative flex-1 px-4 mt-5 sm:px-5">
                                 <div class="absolute inset-0 px-4 sm:px-5">
-                                    <div class="relative h-full overflow-auto border border-dashed rounded-md border-neutral-300">
+                                    <div class="relative h-full overflow-auto">
                                         <ul>
                                             <a href="/quizzes?clear_filter=1" class="block font-medium border rounded-md border-neutral-200 text-red-500 hover:bg-neutral-100 p-2 cursor-pointer">フィルター解除</a>
                                             @foreach($labels as $label)

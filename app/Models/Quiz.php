@@ -32,12 +32,6 @@ class Quiz extends Model
     {
         return $this->hasMany(Question::class);
     }
-
-    // 更新日時順にクイズを取得するスコープ
-    public function scopeLatestUpdated($query)
-    {
-        return $query->orderBy('updated_at', 'desc');
-    }
     
     // 削除日時順にクイズを取得するスコープ
     public function scopeLatestDeleted($query)
