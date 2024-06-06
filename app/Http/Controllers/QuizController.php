@@ -18,83 +18,87 @@ class QuizController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('clear_filter')) 
-        {
-            // clear_filterパラメータが存在する場合、セッションからラベルIDを削除
-            $request->session()->forget('labelId');
-        }
+        // if ($request->has('clear_filter')) 
+        // {
+        //     // clear_filterパラメータが存在する場合、セッションからラベルIDを削除
+        //     $request->session()->forget('labelId');
+        // }
         
-        if ($request->has('clear_sort')) 
-        {
-            $request->session()->forget(['sort', 'order']);
-        }
+        // if ($request->has('clear_sort')) 
+        // {
+        //     $request->session()->forget(['sort', 'order']);
+        // }
     
-        $labelId = $request->id;
+        // $labelId = $request->id;
         
-        if ($labelId) 
-        {
-            // ラベルIDが指定されている場合、それをセッションに保存
-            $request->session()->put('labelId', $labelId);
-        }
-        else
-        {
-            // ラベルIDが指定されていない場合、セッションから取得
-            $labelId = $request->session()->get('labelId');
-        }
+        // if ($labelId) 
+        // {
+        //     // ラベルIDが指定されている場合、それをセッションに保存
+        //     $request->session()->put('labelId', $labelId);
+        // }
+        // else
+        // {
+        //     // ラベルIDが指定されていない場合、セッションから取得
+        //     $labelId = $request->session()->get('labelId');
+        // }
     
+        // $quizzes = collect();
+        // $labels = auth()->user()->labels;
+        // $search = $request->search;
+        // $sort = $request->sort;
+        // $order = $request->order;
+    
+        // if ($labelId)
+        // {
+        //     // ユーザーが所持してるラベルに同じidのラベルがあるか
+        //     $label = $labels->firstWhere('id', $labelId);
+    
+        //     if ($label) 
+        //     {
+        //         // あったらラベルと紐付いてるquizを取ってくる
+        //         $quizzes = $label->quizzes();
+        //     }
+        // }
+        // else 
+        // {
+        //     $quizzes = auth()->user()->quizzes();
+        // }
+        
+        // if ($sort && $order) 
+        // {
+        //     // セッションにsortとorderを保存
+        //     $request->session()->put('sort', $sort);
+        //     $request->session()->put('order', $order);
+        // }
+        // else
+        // {
+        //     // セッションからsortとorderを取得
+        //     $sort = $request->session()->get('sort');
+        //     $order = $request->session()->get('order');
+        // }
+        
+        // if ($sort && $order) 
+        // {
+        //     if ($order === 'asc') 
+        //     {
+        //         $quizzes = $quizzes->orderBy($sort);
+        //     }
+        //     elseif ($order === 'desc') 
+        //     {
+        //         $quizzes = $quizzes->orderByDesc($sort);
+        //     }
+        // }
+        
+        // if($search)
+        // {
+        //     $quizzes = $quizzes->search($search);
+        // }
+        
+        // $quizzes = $quizzes->paginate(10);
+        
         $quizzes = collect();
-        $labels = auth()->user()->labels;
-        $search = $request->search;
-        $sort = $request->sort;
-        $order = $request->order;
-    
-        if ($labelId)
-        {
-            // ユーザーが所持してるラベルに同じidのラベルがあるか
-            $label = $labels->firstWhere('id', $labelId);
-    
-            if ($label) 
-            {
-                // あったらラベルと紐付いてるquizを取ってくる
-                $quizzes = $label->quizzes();
-            }
-        }
-        else 
-        {
-            $quizzes = auth()->user()->quizzes();
-        }
-        
-        if ($sort && $order) 
-        {
-            // セッションにsortとorderを保存
-            $request->session()->put('sort', $sort);
-            $request->session()->put('order', $order);
-        }
-        else
-        {
-            // セッションからsortとorderを取得
-            $sort = $request->session()->get('sort');
-            $order = $request->session()->get('order');
-        }
-        
-        if ($sort && $order) 
-        {
-            if ($order === 'asc') 
-            {
-                $quizzes = $quizzes->orderBy($sort);
-            }
-            elseif ($order === 'desc') 
-            {
-                $quizzes = $quizzes->orderByDesc($sort);
-            }
-        }
-        
-        if($search)
-        {
-            $quizzes = $quizzes->search($search);
-        }
-        
-        $quizzes = $quizzes->paginate(10);
+        $labels = collect();
+        $labelId = 1;
     
         return view('quizzes.index', compact('quizzes', 'labels', 'labelId'));
     }
