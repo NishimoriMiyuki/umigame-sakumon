@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\LabelController;
+use Illuminate\Support\Facades\DB;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -12,6 +13,11 @@ use App\Http\Controllers\LabelController;
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/test', function () {
+    $user = DB::table('users')->first();
+    return $user->name;
+});
 
 Route::get('/', function () 
 {
