@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\DB;
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/test', function () {
-    $user = DB::table('users')->first();
-    return $user->name;
-});
-
 Route::get('/', function () 
 {
     return Auth::check() ? redirect()->route('quizzes.index') : view('auth.register');
